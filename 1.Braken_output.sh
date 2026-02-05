@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#Kraken Database
+#https://benlangmead.github.io/aws-indexes/k2
 # =======================
 # PATHS
 # =======================
