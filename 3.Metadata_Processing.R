@@ -68,7 +68,5 @@ table(Merged_Meta$TP)
 table(Merged_Meta$TP, Merged_Meta$Treatmentcode)
 
 # Final cleaned metadata
-Merged_Meta_fi <- Merged_Meta %>%
-  select( SampleID, SampleDescription,ID,CAZ_HH, TP,PID,TreatID,Treatmentcode)
+write.csv(Merged_Meta %>% select(SampleID, SampleDescription, ID, CAZ_HH, TP, PID, TreatID, Treatmentcode),"CAZ_Meta_Treatment.csv", row.names = FALSE)
 
-write.csv(Merged_Meta_fi, "CAZ_Meta_Treatment.csv", row.names = FALSE)
