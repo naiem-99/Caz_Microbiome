@@ -1,39 +1,74 @@
-#Set Directory
+# ===============================
+# 0. SETUP
+# ===============================
 setwd("D:/2.Caz_Microbiome")
 getwd()
-#----------------------------------------------
-#load packages
-#----------------------------------------------
-library(dplyr)
-list.files()
-#-------remove existing files--------------------
+
 rm(list = ls());gc()
-#-------------------#-Read MetaDataFiles---------------------------------------------------
-Treatment_Data_A <-read.csv("Treatmentcode_A.csv",check.names = F)
-Treatment_Data_B <-read.csv("Treatmentcode_B.csv",check.names = F)
-Treatment_Data <- Treatment_Data_A %>%inner_join(Treatment_Data_B, by='PID')
-head(Treatment_Data)
-#-----------------------------------------------------------------------------------------------
-Treatment_Data_P <- Treatment_Data %>%
-  # 1. Flag TreatIDs as Unique or Multiple
-  group_by(TreatID) %>%
-  mutate(Type = ifelse(n() == 1, "Unique", "Multiple")) %>%
-  ungroup() %>%
-  # 2. Keep only the first occurrence per TreatID
-  distinct(TreatID, .keep_all = TRUE) %>%
-  # 3. Extract the Household ID (e.g., CAZ-001)
-  mutate(CAZ_HH = sub("^(CAZ-[^-]+)-.*$", "\\1", PID))
-#Treatment_Data_P <- Treatment_Data%>%distinct(TreatID, .keep_all = TRUE) %>%mutate(CAZ_HH = sub("^(CAZ-[^-]+)-.*$", "\\1", PID))
-#-------------------------------------------------------------------------------------------------
+library(dplyr)
+
+# ===============================
+# 1. READ & MERGE TREATMENT FILES
+# ===============================
+read_and_merge_treatment <- function(file_a, file_b) {
+  ta <- read.csv(file_a, check.names = FALSE)
+  tb <- read.csv(file_b, check.names = FALSE)
+  inner_join(ta, tb, by = "PID")}
+
+# ===============================
+# 2. PROCESS TREATMENT DATA
+# ===============================
+process_treatment_data <- function(treatment_df) {
+  treatment_df %>%
+    group_by(TreatID) %>%
+    mutate(Type = ifelse(n() == 1, "Unique", "Multiple")) %>%
+    ungroup() %>%
+    distinct(TreatID, .keep_all = TRUE) %>%
+    mutate(
+      CAZ_HH = sub("^(CAZ-[^-]+)-.*$", "\\1", PID))}
+
+# ===============================
+# 3. READ & FILTER CAZ METADATA
+# ===============================
+read_caz_metadata <- function(metadata_file) {
+  read.csv(metadata_file, check.names = FALSE) %>%
+    filter(!TP %in% c("NC", "EC"))}
+
+# ===============================
+# 4. MERGE METADATA + TREATMENT
+# ===============================
+merge_metadata_treatment <- function(meta_df, treatment_df) {
+  inner_join(meta_df, treatment_df, by = "CAZ_HH")}
+
+# ===============================
+# 5. MAIN PIPELINE
+# ===============================
+
+# Treatment data
+Treatment_Data <- read_and_merge_treatment(
+  "Treatmentcode_A.csv",
+  "Treatmentcode_B.csv")
+
+Treatment_Data_P <- process_treatment_data(Treatment_Data)
+
 table(Treatment_Data_P$Type)
 dim(Treatment_Data_P)
-#-----------------------------------------------------------------------------------------------------
-Caz_Meta_Data <- read.csv("CAZ-metadata-simple.csv",check.names = F) %>%filter(!TP %in% c("NC", "EC"))
-#-----------------------------------------------------------------------------------------------------
-Merged_Meta<-  Caz_Meta_Data %>%inner_join(Treatment_Data_P,by="CAZ_HH")
-write.csv(Merged_Meta,"Merged_CAZ_Meta.csv",row.names = F)
+
+# CAZ metadata
+Caz_Meta_Data <- read_caz_metadata("CAZ-metadata-simple.csv")
+
+# Merge metadata + treatment
+Merged_Meta <- merge_metadata_treatment(
+  Caz_Meta_Data,
+  Treatment_Data_P)
+
+write.csv(Merged_Meta, "Merged_CAZ_Meta.csv", row.names = FALSE)
+
 table(Merged_Meta$TP)
-table(Merged_Meta$TP,Merged_Meta$Treatmentcode)
-#--------------------------------------------------------------------------------------------------------
-Merged_Meta_fi <-Merged_Meta %>%select(SampleID,SampleDescription,ID,CAZ_HH,TP,PID,TreatID,Treatmentcode)
-write.csv(Merged_Meta_fi,"CAZ_Meta_Treatment.csv",row.names = F)
+table(Merged_Meta$TP, Merged_Meta$Treatmentcode)
+
+# Final cleaned metadata
+Merged_Meta_fi <- Merged_Meta %>%
+  select( SampleID, SampleDescription,ID,CAZ_HH, TP,PID,TreatID,Treatmentcode)
+
+write.csv(Merged_Meta_fi, "CAZ_Meta_Treatment.csv", row.names = FALSE)
