@@ -33,7 +33,7 @@ for f in "$IN_DIR"/*.bracken; do
     --exclude 9606
 done
 #-----------------------------------------------------------------------------------------------------------------------------
-#---------------------- make the below script as filter_braken.lsf then upload in HPC , and then run as bsub < filter_bracken.lsf
+#---------------------- make the below script as filter_braken.lsf then upload in HPC , and then run as bsub < filtered_bracken.lsf
 #check the job status by running : bjobs, the you will be shown the status whether pending or completion
 #if you waana kill a job just type bkill jobID
 
