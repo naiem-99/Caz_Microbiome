@@ -2,6 +2,7 @@
 #git clone https://github.com/jenniferlu717/KrakenTools.git
 
 module avail python
+module load PaM/environment
 module load python-3.9.18
 #--------------------------------------------------------------
 #https://github.com/jenniferlu717/KrakenTools/tree/master
