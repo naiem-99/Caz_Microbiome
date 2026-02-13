@@ -4,6 +4,7 @@
 setwd("D:/2.Caz_Microbiome")
 getwd()
 rm(list = ls());gc()
+.rs.restartR()
 library(dplyr)
 # ===============================
 # 1. READ & MERGE TREATMENT FILES
