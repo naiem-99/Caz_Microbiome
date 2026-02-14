@@ -1,6 +1,6 @@
-#--------------------Run this scipt where all filtered.braken output exist
+#--------------------Run this scipt where all filtered.braken output exist and save as merge_brackenv2.py and run as 
 module load python-3.9.18
-#as ------------python3 merge_braken.py-------------------------------------
+#as ------------python3 merge_brackenv2.py-------------------------------------
 import glob
 import pandas as pd
 
