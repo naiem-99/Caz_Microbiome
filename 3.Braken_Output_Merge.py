@@ -20,5 +20,5 @@ for t in tables[1:]:
     merged = merged.merge(t, on="name", how="outer")
 
 merged = merged.fillna(0)
-merged.to_csv("species_abundance_matrix.tsv", sep="\t", index=False)
+merged.to_csv("species_abundance_matrix_fitered.tsv", sep="\t", index=False)
 #----------------------------------------------------------------------------------------------------
