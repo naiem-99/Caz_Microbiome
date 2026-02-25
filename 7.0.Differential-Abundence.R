@@ -81,7 +81,7 @@ rownames(tax4) <- colnames(Abundence_Matrix_D04)
 TAX4<- tax_table(as.matrix(tax4))
 Physeq_D04 <- phyloseq(OTU4, META4, TAX4)
 #---------------------------------RUN Diff abundence---------------
-Result_D04_Lesfe <-run_lefse(Physeq_D04,wilcoxon_cutoff = 0.05, norm = "CPM",group = "Treatmentcode",kw_cutoff = 0.05,multigrp_strat = TRUE,lda_cutoff = 2)
+Result_D04_Lesfe <-run_lefse(Physeq_D04,wilcoxon_cutoff = 0.05, norm = "CPM",group = "Treatmentcode",kw_cutoff = 0.05,multigrp_strat = TRUE,lda_cutoff = 3)
 saveRDS(Result_D04_Lesfe, "1.Results/D4/lefse_result_D4.rds")
 # ===============================
 # PLOTS
@@ -122,7 +122,7 @@ Physeq_D180 <- phyloseq(OTU180, META180, TAX180)
 # ===============================
 # RUN LEFSE
 # ===============================
-Result_D180_Lesfe <- run_lefse(Physeq_D180,wilcoxon_cutoff = 0.05,norm = "CPM",group = "Treatmentcode",kw_cutoff = 0.05,multigrp_strat = TRUE,lda_cutoff = 2)
+Result_D180_Lesfe <- run_lefse(Physeq_D180,wilcoxon_cutoff = 0.05,norm = "CPM",group = "Treatmentcode",kw_cutoff = 0.05,multigrp_strat = TRUE,lda_cutoff = 1)
 saveRDS(Result_D180_Lesfe, "1.Results/D180/lefse_result_D180.rds")
 # ===============================
 # PLOTS
