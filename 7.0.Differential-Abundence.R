@@ -2,7 +2,7 @@
 #https://yiluheihei.github.io/microbiomeMarker/articles/microbiomeMarker-vignette.html
 #---------------------------------------------------------------------------------------------------
 library(DECIPHER)
-library("gsl")
+library(gsl)
 #BiocManager::install("microbiomeMarker")
 library(microbiomeMarker)
 #----------------------------------------------------------------------------------------------------
