@@ -64,8 +64,8 @@ plotDataFeces <- phy %>%psmelt %>% inner_join(.,topTaxa, by="Phylum") %>%
   mutate(Treatmentcode=factor(Treatmentcode,levels=c("Azithromycin","Placebo")))%>%rename(Phylum=aggTaxo)
 
 #---------------Plot the Data--------------------------------------------------------------------------------------------------------------
-ggplot(plotDataFeces, aes(x=TP, y=Abundance, fill=Phylum)) +geom_bar(stat="identity", position="fill") +facet_grid(~Treatmentcode, scale="free")
-ggsave(
+Phylum_stacked_bar<-ggplot(plotDataFeces, aes(x=TP, y=Abundance, fill=Phylum)) +geom_bar(stat="identity", position="fill") +facet_grid(~Treatmentcode, scale="free")
+ggsave("D:/2.Caz_Microbiome/1.Data/2.Braken_Phylum_Family//Phylum_stacked_bar.png", plot = Phylum_stacked_bar,width = 10,height = 8,dpi=500)
 #--------------------------------------------------------------------------
 
 
