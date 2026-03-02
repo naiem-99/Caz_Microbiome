@@ -59,12 +59,12 @@ topTaxa <- phy %>% psmelt %>% group_by(Phylum) %>%
   dplyr::select(-Abundance) %>% head(n=topN+1)
 
 ### CREATE an object that will be fed into ggplot
-plotDataFeces <- phy %>%psmelt %>% inner_join(.,topTaxa, by="Phylum") %>% 
+plotData<- phy %>%psmelt %>% inner_join(.,topTaxa, by="Phylum") %>% 
   aggregate(Abundance~TP+aggTaxo+Treatmentcode,data=., FUN=sum) %>%
   mutate(Treatmentcode=factor(Treatmentcode,levels=c("Azithromycin","Placebo")))%>%rename(Phylum=aggTaxo)
 
 #---------------Plot the Data--------------------------------------------------------------------------------------------------------------
-Phylum_stacked_bar<-ggplot(plotDataFeces, aes(x=TP, y=Abundance, fill=Phylum)) +geom_bar(stat="identity", position="fill") +facet_grid(~Treatmentcode, scale="free")
+Phylum_stacked_bar<-ggplot(plotData, aes(x=TP, y=Abundance, fill=Phylum)) +geom_bar(stat="identity", position="fill") +facet_grid(~Treatmentcode, scale="free")
 ggsave("D:/2.Caz_Microbiome/1.Data/2.Braken_Phylum_Family//Phylum_stacked_bar.png", plot = Phylum_stacked_bar,width = 10,height = 8,dpi=500)
 #--------------------------------------------------------------------------
 
