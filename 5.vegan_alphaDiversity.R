@@ -2,7 +2,7 @@
 #---------------------------------Alternative Option (R Script vegan Package)-------------------------------
 
 #---------------------------------alpha -----------------------------------------------------------------
-#-------------------------Calculate alpha and beta diversity--------------------------
+#-------------------------Calculate alpha diversity--------------------------
 library(dplyr)
 library(vegan)
 library(tibble)
