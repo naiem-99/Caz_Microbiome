@@ -14,9 +14,39 @@ library(ggpubr)
 #https://www.youtube.com/watch?v=wq1SXGQYgCs
 #https://github.com/riffomonas/distances/blob/64df17d165f28fc283a0f892c90f482650af07e7/code/alpha.R
 list.files()
+#--------------------------------------------------------------------------------
+Species_ab_m <-read.csv("species_abundance_matrix_filtered.csv", check.names = F)
+# Corrected syntax
+colnames(Species_ab_m) <- gsub("\\.", "", colnames(Species_ab_m))
+head(Species_ab_m)
+Species_ab_m_t <- Species_ab_m %>%
+  column_to_rownames("Name") %>%   # species → rownames
+  t() %>%                          # transpose
+  as.data.frame() %>%              # matrix → data.frame
+  rownames_to_column("SampleID") %>%
+  mutate(SampleID = str_replace(SampleID,"(DS-)(\\d+)$",function(x) {
+        prefix <- str_match(x, "(DS-)")[,2]
+        num    <- str_match(x, "(\\d+)$")[,2]
+        paste0(prefix, str_pad(num, width = 4, pad = "0"))}))
+# rownames → SampleID column
+head(Species_ab_m_t) [1:10,1:10]
+write.csv(Species_ab_m_t,"Species_ab_m_t.csv",row.names = F)
+#--------------------------------Merge the data----------------------------------------------------
+Merged_Meta_fi<-read.csv("CAZ_Meta_Treatment.csv", check.names = F)
+Species_ab_m_t<-read.csv("Species_ab_m_t.csv", check.names = F)
+Merge_Sample_Species <- Species_ab_m_t %>%inner_join(Merged_Meta_fi, by = "SampleID") %>%select(-c(SampleDescription, ID, CAZ_HH, PID, TreatID))
+#write.csv(Merge_Sample_Species,"Merge_Sample_Species.csv",row.names = F)
+#--------------------------------------------------------------------
+#Merge_Sample_Species_2nd <- Species_ab_m_t %>%inner_join(Merged_Meta_fi, by = "SampleID")# %>%select(-c(SampleDescription, ID, CAZ_HH, PID, TreatID))
+#write.csv(Merge_Sample_Species_2nd,"Merge_Sample_Species_2nd.csv",row.names = F)
+#-------------------------------------------------------------------
+tail(colnames(Merge_Sample_Species), 10)
+head(colnames(Merge_Sample_Species), 10)
+#------------------
+#--------------------------------------------------------------------------------
 # READ DATA
 # ===============================
-Merge_Sample_Species <- read.csv("Merge_Sample_Species_2nd.csv", check.names = FALSE)
+Merge_Sample_Species <- read.csv("Merge_Sample_Species.csv", check.names = FALSE)
 library(dplyr)
 library(tidyr)
 dim(Merge_Sample_Species)
