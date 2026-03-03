@@ -154,6 +154,4 @@ Family_stacked_bar <- ggplot(plotData_family,aes(x = TP, y = Abundance, fill = F
 #--------------------------------------------------------------------------------------------------------------------------------------------
 Family_stacked_bar
 ggsave("D:/2.Caz_Microbiome/1.Data/2.Braken_Phylum_Family//Family_stacked_bar.png", plot = Family_stacked_bar,width = 9,height = 8,dpi=800)
-
-
 #------------------------------------------------------The End-----------------------------------------------------------------------------#
