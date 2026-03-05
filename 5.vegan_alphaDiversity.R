@@ -1,8 +1,7 @@
 
-#---------------------------------Alternative Option (R Script vegan Package)-------------------------------
-
+#---------------------------------Alternative Option (R Script vegan Package)----------------------------
 #---------------------------------alpha -----------------------------------------------------------------
-#-------------------------Calculate alpha diversity--------------------------
+#-------------------------Calculate alpha diversity------------------------------------------------------
 library(dplyr)
 library(vegan)
 library(tibble)
@@ -14,7 +13,7 @@ library(ggpubr)
 #https://www.youtube.com/watch?v=wq1SXGQYgCs
 #https://github.com/riffomonas/distances/blob/64df17d165f28fc283a0f892c90f482650af07e7/code/alpha.R
 list.files()
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 Species_ab_m <-read.csv("species_abundance_matrix_filtered.csv", check.names = F)
 # Corrected syntax
 colnames(Species_ab_m) <- gsub("\\.", "", colnames(Species_ab_m))
@@ -22,12 +21,11 @@ head(Species_ab_m)
 Species_ab_m_t <- Species_ab_m %>%
   column_to_rownames("Name") %>%   # species → rownames
   t() %>%                          # transpose
-  as.data.frame() %>%              # matrix → data.frame
-  rownames_to_column("SampleID") %>%
+  as.data.frame() %>%rownames_to_column("SampleID")%>%
   mutate(SampleID = str_replace(SampleID,"(DS-)(\\d+)$",function(x) {
-        prefix <- str_match(x, "(DS-)")[,2]
-        num    <- str_match(x, "(\\d+)$")[,2]
-        paste0(prefix, str_pad(num, width = 4, pad = "0"))}))
+  prefix <- str_match(x, "(DS-)")[,2]
+  num    <- str_match(x, "(\\d+)$")[,2]
+  paste0(prefix, str_pad(num, width = 4, pad = "0"))}))
 # rownames → SampleID column
 head(Species_ab_m_t) [1:10,1:10]
 write.csv(Species_ab_m_t,"Species_ab_m_t.csv",row.names = F)
