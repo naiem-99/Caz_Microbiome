@@ -1,3 +1,18 @@
+#Braken and krakentools were install here  bu usuing these command
+
+#------------------------------------
+#cd /nfs/users/nfs_m/ma32
+#mkdir -p tools
+# tools
+#git clone https://github.com/jenniferlu717/Bracken.git
+#cd Bracken
+
+#------------------------------
+
+#cd /nfs/users/nfs_m/ma32/tools
+#git clone https://github.com/jenniferlu717/KrakenTools.git
+# before running the bash script , dos2unix script.sh
+#-----------------------------------
 #!/bin/bash
 
 export PATH="/nfs/users/nfs_m/ma32/tools/Bracken:$PATH"
